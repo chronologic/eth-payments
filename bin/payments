@@ -14,8 +14,9 @@ commander
 .command('collect')
 .description('collect ETH from multiple accounts')
 .action(function() {
-    let account = new Account("0x0", "0x0");
-    let ps      = new PaymentService(account);
+    let account = new Account("personal", "0x0", "0x0");
+
+    let ps = new PaymentService(account);
 
     // TODO: pass source and target
     ps.transfer();

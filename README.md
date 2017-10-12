@@ -8,7 +8,26 @@ Use this to:
 Have Parity or any other Web3 provider available.
 
 ```
-$ DEBUG=payments:* ./bin/distribute --from 0x123 
+$ DEBUG=payments:* ./bin/payments -h
+
+  Usage: payments [options] [command]
+
+
+  Options:
+
+    -V, --version  output the version number
+    -h, --help     output usage information
+
+
+  Commands:
+
+    collect      collect ETH from multiple accounts
+    distribute   distribute ETH to multiple accounts
+  Example:
+
+    $ payments collect
+    $ payments distribute
+
 ```
 
   
