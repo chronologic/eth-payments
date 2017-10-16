@@ -1,48 +1,69 @@
 #!/usr/bin/env node
-let commander = require('commander');
+const commander = require('commander');
 
-let config  = require("../config");
-let pkgJson = require('../package.json');
+const config = require("../config");
+const pkgJson = require('../package.json');
 
-let Account        = require('../lib/Account'),
-    PaymentService = require('../lib/PaymentService');
+const PaymentService = require('../lib/PaymentService');
 
-commander
-.version(pkgJson.version);
-
-commander
-.command('collect')
-.description('collect ETH from multiple accounts')
-.action(function() {
-    let account = new Account("personal", "0x0", "0x0");
-
-    let ps = new PaymentService(account);
-
-    // TODO: pass source and target
-    ps.transfer();
-
-    process.exit();
-});
+const listDecomposer = (val) => {
+  return val.split(',');
+};
 
 commander
-.command('distribute')
-.description('distribute ETH to multiple accounts')
-.action(function() {
+  .version(pkgJson.version);
+
+commander
+  .option('-s, --source', 'Source ETH address')
+  .option('-S, --sources', 'Comma-separated list of source addresses', listDecomposer);
+
+commander
+  .option('-t, --target', 'Target ETH address')
+  .option('-T, --targets', 'Comma-separated list of target addresses', listDecomposer);
+
+commander
+  .option('-e, --eth', 'ETH Amount');
+
+commander
+  .command('collect')
+  .description('collect ETH from multiple accounts')
+  .action(function () {
     let ps = new PaymentService();
+    return ps
+      .flow(commander.eth, commander.sources || [commander.source] || [], [commander.target])
+      .then(() => {
+        console.log('ETH have been collected.');
+        process.exit();
+      })
+      .catch((err) => {
+        console.log(`Some shit happened: ${err.message}`);
+        process.exit();
+      });
+  });
 
-    // TODO: pass source and target
-    ps.transfer();
+commander
+  .command('distribute')
+  .description('distribute ETH to multiple accounts')
+  .action(function () {
+    let ps = new PaymentService();
+    return ps
+      .flow(commander.eth, [commander.source], commander.targets || [commander.target] || [])
+      .then(() => {
+        console.log('ETH have been distributed.');
+        process.exit();
+      })
+      .catch((err) => {
+        console.log(`Some shit happened: ${err.message}`);
+        process.exit();
+      });
+  });
 
-    console.log("call payments...");
-    process.exit();
-});
-
-commander.on('--help', function() {
-    console.log('  Example:');
-    console.log();
-    console.log('    $ payments collect');
-    console.log('    $ payments distribute');
-    console.log();
+commander.on('--help', function () {
+  console.log('  Example:');
+  console.log();
+  console.log('    $ payments collect');
+  console.log('    $ payments distribute');
+  console.log();
 });
 
 commander.parse(process.argv);
