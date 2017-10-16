@@ -17,6 +17,11 @@ $ DEBUG=payments:* ./bin/payments -h
 
     -V, --version  output the version number
     -h, --help     output usage information
+    -s, --source   source ETH address to take ether
+    -S, --sources  comma-separated list of source ETH addresses to take ether
+    -t, --target   target ETH address to send ether
+    -T, --targets  comma-separated list of target ETH addresses to send ether
+    -e, --eth      amount of ether sending with specified command
 
 
   Commands:
@@ -25,8 +30,8 @@ $ DEBUG=payments:* ./bin/payments -h
     distribute   distribute ETH to multiple accounts
   Example:
 
-    $ payments collect
-    $ payments distribute
+    $ payments collect --eth 1.0 --source 0x0 --targets 0x0,0x0
+    $ payments distribute --eth 1.0 --sources 0x0,0x0 --target 0x0
 
 ```
 
