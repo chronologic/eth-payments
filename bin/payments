@@ -14,15 +14,15 @@ commander
   .version(pkgJson.version);
 
 commander
-  .option('-s, --source', 'Source ETH address')
-  .option('-S, --sources', 'Comma-separated list of source addresses', listDecomposer);
+  .option('-s, --source <value>', 'Source ETH address')
+  .option('-S, --sources <value>', 'Comma-separated list of source addresses', listDecomposer);
 
 commander
-  .option('-t, --target', 'Target ETH address')
-  .option('-T, --targets', 'Comma-separated list of target addresses', listDecomposer);
+  .option('-t, --target <value>', 'Target ETH address')
+  .option('-T, --targets <value>', 'Comma-separated list of target addresses', listDecomposer);
 
 commander
-  .option('-e, --eth', 'ETH Amount');
+  .option('-e, --eth <value>', 'ETH Amount');
 
 commander
   .command('collect')
@@ -61,8 +61,8 @@ commander
 commander.on('--help', function () {
   console.log('  Example:');
   console.log();
-  console.log('    $ payments collect');
-  console.log('    $ payments distribute');
+  console.log('    $ payments collect --eth 1.0 --source 0x0 --targets 0x0,0x0');
+  console.log('    $ payments distribute --eth 1.0 --sources 0x0,0x0 --target 0x0');
   console.log();
 });
 
